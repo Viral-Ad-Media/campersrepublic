@@ -1,0 +1,6 @@
+[
+  { "slug": "camping-essentials", "name": "Camping Essentials", "description": "The gear and know-how that make a night outdoors comfortable: shelter, sleep, cooking and checklists." },
+  { "slug": "rv-camping", "name": "RV Camping", "description": "Life on the road, from car camping basics to boondocking off-grid in a rig." },
+  { "slug": "glamping", "name": "Glamping", "description": "Bell tents, domes and the comfortable side of sleeping outside." },
+  { "slug": "activities", "name": "Activities", "description": "Hiking, biking and backpacking: what to wear, carry and ride." }
+]
