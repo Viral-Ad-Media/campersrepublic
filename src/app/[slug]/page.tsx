@@ -13,6 +13,8 @@ type Props = { params: Promise<{ slug: string }> };
 
 // WordPress served posts and categories from the root, so this route resolves both.
 async function resolve(slug: string) {
+  // Skip the database for anything that can't be a slug (e.g. /favicon.png, /wp-login.php).
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return null;
   const post = await loadPost(slug);
   if (post) return { kind: "post" as const, post };
   const category = (await getCategories()).find((c) => c.slug === slug);

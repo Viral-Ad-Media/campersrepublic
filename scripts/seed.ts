@@ -19,6 +19,9 @@ const pool = isNeon ? null : new Pool({ connectionString: url });
 const db = isNeon ? drizzleNeon(neon(url), { schema }) : drizzlePg(pool!, { schema });
 
 const root = path.join(process.cwd(), "content");
+// --missing-only: insert posts that are not in the DB yet, never overwrite existing ones
+// (used on every Vercel build so edits made in /admin are kept).
+const missingOnly = process.argv.includes("--missing-only");
 
 async function main() {
   const cats: { slug: string; name: string; description: string }[] = JSON.parse(
@@ -50,6 +53,15 @@ async function main() {
       publishedAt: data.date ? new Date(data.date) : new Date(),
       updatedAt: new Date(),
     };
+    if (missingOnly) {
+      const inserted = await db
+        .insert(schema.posts)
+        .values(values)
+        .onConflictDoNothing()
+        .returning();
+      console.log(inserted.length ? "inserted" : "exists, skipped", slug);
+      continue;
+    }
     await db
       .insert(schema.posts)
       .values(values)

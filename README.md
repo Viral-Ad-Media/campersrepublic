@@ -31,7 +31,7 @@ Then open `/login`, choose **Create the admin account** using an email from `ADM
 
 1. Create a Neon project and copy the pooled connection string.
 2. Set the env vars from `.env.example` in your host. Set `BETTER_AUTH_URL` and `NEXT_PUBLIC_SITE_URL` to the production domain.
-3. Run `npm run db:migrate && npm run db:seed` once against the production database.
+3. Nothing to run by hand: on Vercel the `vercel-build` script runs the database migrations and inserts any articles that are missing before building. It never overwrites posts that already exist, so edits made in `/admin` are kept. (Use `npm run db:seed` locally to force-reset the articles from `content/posts`.)
 4. Point the domain at the new deployment, then resubmit `/sitemap.xml` in Google Search Console.
 
 Public pages cache database reads for up to an hour. Saving in `/admin` refreshes them immediately, but changes made directly in the database (or by re-seeding) show up within the hour, or after a redeploy.
